@@ -1,3 +1,6 @@
+/*
+ ** Minimalistic JavaScript library for toast notifications
+ */
 const notyf = new Notyf();
 
 const currentUrl = window.location.href;
@@ -15,6 +18,19 @@ const quantity = document.getElementById('quantity');
 
 const addToCartButton = document.getElementById('addToCart');
 
+/**
+ * Call the API to get product information depending on its id.
+ */
+fetch(apiById)
+  .then((response) => response.json())
+  .then((kanap) => displaySelectedKanap(kanap));
+
+/**
+ * Displays the product data received
+ *
+ * @param kanap
+ * @returns
+ */
 function displaySelectedKanap(kanap) {
   // Add image
   imageItem.appendChild(image);
@@ -38,6 +54,12 @@ function displaySelectedKanap(kanap) {
     color.textContent = colorType;
   }
 }
+
+/**
+ * Get value saved in localStorage with the key 'kanap'
+ *
+ * Returns either an empty array or an array containing all product objects saved
+ */
 const getCart = () => {
   const data = localStorage.getItem('kanap');
   if (data === null) {
@@ -47,15 +69,19 @@ const getCart = () => {
   }
 };
 
+/**
+ * Save the chosen kanap with its specificities (quantity, color) in localStorage
+ */
 function saveKanapSelected() {
   let cart = getCart();
-  let kanapQuantity = parseInt(quantity.value);
+  let kanapQuantity = +quantity.value;
   let sameProduct = false;
-  const kanapData = {};
 
-  kanapData.id = kanapId;
-  kanapData.color = colors.value;
-  kanapData.quantity = kanapQuantity;
+  const kanapData = {
+    id: kanapId,
+    color: colors.value,
+    quantity: kanapQuantity,
+  };
 
   if (colors.value === '') {
     notyf.error('Veuillez choisir une couleur');
@@ -77,10 +103,6 @@ function saveKanapSelected() {
     notyf.success('Produit ajouté au panier !');
   }
 }
-
-fetch(apiById)
-  .then((response) => response.json())
-  .then((kanap) => displaySelectedKanap(kanap));
 
 addToCartButton.addEventListener('click', () => {
   saveKanapSelected();

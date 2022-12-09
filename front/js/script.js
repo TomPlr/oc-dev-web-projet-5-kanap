@@ -2,6 +2,11 @@ const apiProducts = 'http://localhost:3000/api/products';
 
 const items = document.getElementById('items');
 
+/**
+ * Create all HTML elements needed for product to be displayed
+ *
+ * @param kanap
+ */
 function insertKanap(kanap) {
   const link = document.createElement('a');
   const article = document.createElement('article');
